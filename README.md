@@ -37,7 +37,7 @@ Preparation:
 
 Steps for setup:
 
-    $git clone [https://github.com/armindocachada/OpenVPN-Docker-GoogleAuth](https://github.com/armindocachada/OpenVPN-Docker-GoogleAuth)
+    $git clone https://github.com/roxleopardo/OpenVPN-Docker-GoogleAuth.git
     $cd OpenVPN-Docker-GoogleAuth
     docker-compose up -d
 
