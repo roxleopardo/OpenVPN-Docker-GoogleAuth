@@ -23,9 +23,9 @@ The new OpenVPN implementation runs as 4 docker containers:
 
 * **openvpn** docker container runs the openvpn server
 
-* **webadmin **runs the webadmin interface for OpenVPN
+* **webadmin** runs the webadmin interface for OpenVPN
 
-* **googleauth **is a docker container that runs a small PHP microservice to do the 2 step authentication(pairing and validation).
+* **googleauth** is a docker container that runs a small PHP microservice to do the 2 step authentication(pairing and validation).
 
 * **openvpn_docker_nginx** is the docker container that exposes the OpenVPN interface via SSL
 
@@ -86,9 +86,9 @@ The **googleauth** docker container is needed for the 2 factor authentication. I
 
 The **db** docker container is used to store usernames/passwords.
 
-The **OpenVPN c**ontainer runs the **OpenVPN** server to which the **OpenVPN** will connect.
+The **OpenVPN** container runs the **OpenVPN** server to which the **OpenVPN** will connect.
 
-**The webadmin **container contains the OpenVPN web administration interface where you can create **VPN** accounts and setup **2 Factor** authentication.
+**The webadmin** container contains the OpenVPN web administration interface where you can create **VPN** accounts and setup **2 Factor** authentication.
 
 To access the OpenVPN web administration interface you can use:
 
