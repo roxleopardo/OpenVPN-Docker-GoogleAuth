@@ -32,64 +32,33 @@ The new OpenVPN implementation runs as 4 docker containers:
 Preparation:
 
  1. Install **Docker**
+```
+yum install -y yum-utils
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum install docker-ce docker-ce-cli containerd.io git
+systemctl start docker
+systemctl enable docker
+systemctl enable containerd.service
+```
 
- 2. Install **docker-compos**e
+ 2. Install **docker-compose**
+```
+curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+```
 
 Steps for setup:
-
-    $git clone https://github.com/roxleopardo/OpenVPN-Docker-GoogleAuth.git
-    $cd OpenVPN-Docker-GoogleAuth
-    docker-compose up -d
-
-    Creating network "openvpn-docker-googleauth_default" with the default driver
-    Creating volume "openvpn-docker-googleauth_openvpn_config" with default driver
-    Creating volume "openvpn-docker-googleauth_db_data" with default driver
-    Building openvpn
-
-    Step 1/16 : FROM centos/php-72-centos7
-    latest: Pulling from centos/php-72-centos7
-    75f829a71a1c: Pull complete
-    e2c4942f4189: Pull complete
-    f1498894b11c: Pull complete
-    da56c9694723: Pull complete
-    07fa76fc639e: Pull complete
-    8adb3980d23d: Pull complete
-    bf52e0852ccc: Pull complete
-    022196718e3e: Pull complete
-    8d81a4f20bd7: Pull complete
-
-    Digest: sha256:8eee082936869e8c77abb2eb18f10f61de02dc10c36b01cb35955114be2afd64
-
-    Status: Downloaded newer image for centos/php-72-centos7:latest
-
-    ---> 6df586f63c89
-
-    Step 2/16 : USER root
-
-    ---> Running in 2ea6f77e847c
-
-    ....
-
-    bootstrap#3.4.1 vendor/bootstrap
-    └── jquery#2.2.4
-    Removing intermediate container cc0508eca502
-    ---> d94208cdefe1
-    Step 14/15 : RUN rm -fr /root/OpenVPN-Admin && chown -R www-data:www-data /var/www/html
-    ---> Running in 319edaf415c7
-    Removing intermediate container 319edaf415c7
-    ---> 5aaa0ae56087
-    Step 15/15 : COPY ./webadmin/start.sh /usr/local/bin
-    ---> d8a662dbafd5
-    Successfully built d8a662dbafd5
-    Successfully tagged openvpn-docker-googleauth_webadmin:latest
-    Creating googleauth ... done
-    Creating db         ... done
-    Creating openvpn    ... done
-    Creating webadmin   ... done
+```
+git clone https://github.com/roxleopardo/OpenVPN-Docker-GoogleAuth.git
+cd OpenVPN-Docker-GoogleAuth
+mv .env_template .env
+# Edit .env file with desired informations
+docker-compose up -d
+```
 
 Now check that you have 4 docker containers running in your system:
-
-    $docker ps -a
+```
+docker ps -a
 
     CONTAINER ID        IMAGE                                  COMMAND                  CREATED             STATUS              PORTS                                        NAMES
 
@@ -100,6 +69,17 @@ Now check that you have 4 docker containers running in your system:
     4985a54a5594        openvpn-docker-googleauth_googleauth   "docker-php-entrypoi…"   2 minutes ago       Up 2 minutes        80/tcp                                       googleauth
 
     970f978c37d1        mariadb                                "docker-entrypoint.s…"   2 minutes ago       Up 2 minutes        3306/tcp                                     db
+```
+To persist container running after server restart run:
+```
+docker update --restart unless-stopped <container>
+```
+To explore container run:
+```
+docker exec -t -i <container> /bin/bash
+# Then you can edit OpenVPN iptables rules
+vi /usr/local/bin/docker-entrypoint.sh
+```
 
 The **googleauth** docker container is needed for the 2 factor authentication. It is called internally by openvpn and the webadmin when doing the 2 factor authentication.
 
