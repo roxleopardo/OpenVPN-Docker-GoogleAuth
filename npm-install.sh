@@ -138,7 +138,7 @@ url=`(curl -SsL https://registry.npmjs.org/npm/$t; echo "") \
      | sed -e 's/^.*tarball":"//' \
      | sed -e 's/".*$//'`
 
-echo "fetching: $url" >&2
+echo "fetching $t: $url" >&2
 
 cd "$TMP" \
   && curl -SsL -o npm.tgz "$url" \
